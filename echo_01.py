@@ -1,3 +1,5 @@
+
+
 def echo():
     while True:
         line = input('> ')
@@ -8,4 +10,7 @@ def echo():
     print 'Good Bye!'
 
 
-echo()
+if (__name__ == '__main__'):
+    echo()
+
+

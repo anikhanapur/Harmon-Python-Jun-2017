@@ -1,3 +1,5 @@
+import sys
+
 def extract_lines_from_file(file_name='words-data.txt'):
     return open(file_name, 'r').readlines()
 
@@ -36,12 +38,16 @@ def get_top_10_occurance(stats):
     return result[:10]
 
 
-def run():
-    lines = extract_lines_from_file()
+def run(file_name):
+    lines = extract_lines_from_file(file_name)
     words = extract_words(lines)
     stats = get_occurance_count(words)
     result = get_top_10_occurance(stats)
     print result
 
 
-run()
+if (__name__ == '__main__'):
+    if (len(sys.argv) <= 1 or sys.argv[1] is None):
+        print('Invalid arguments')
+    else:
+        run(sys.argv[1])
