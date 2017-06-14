@@ -6,10 +6,14 @@ products.append({'id' : 6, 'name' : 'Den', 'cost' : 90, 'units' : 60, 'category'
 products.append({'id' : 2, 'name' : 'Zen', 'cost' : 50, 'units' : 30, 'category' : 'stationary'})
 
 
+def print_line():
+    print('-' * 80)
+
+
 def print_list(list):
     for item in list:
         print(item)
-    print('-' * 80)
+    print_line()
 
 
 def sort(list, key):
@@ -87,38 +91,81 @@ stationary_products = filter_stationary()
 print_list(stationary_products)
 
 
-def filter(list, criteria):
+def filter(list, predicate):
     result = []
     for item in list:
-        if (criteria(item)):
+        if (predicate(item)):
             result.append(item)
 
     return result
 
 
-def costly_product_criteria(product):
+def costly_product_predicate(product):
     return product['cost'] >= 60
 
 
 print('Costly Products [ cost >= 60 ]')
-# costly_products = filter(products, costly_product_criteria)
+# costly_products = filter(products, costly_product_predicate)
 costly_products = filter(products, lambda product: product['cost'] >= 60)
 print_list(costly_products)
 
 
-# def affordable_product_criteria(product):
+# def affordable_product_predicate(product):
 #     # return product['cost'] < 60
-#     return not costly_product_criteria(product)
+#     return not costly_product_predicate(product)
 
-# def negate(criteria):
-#     def negated_criteria(item):
-#         return not criteria(item)
-#     return negated_criteria
+# def negate(predicate):
+#     def negated_predicate(item):
+#         return not predicate(item)
+#     return negated_predicate
 
 negate = lambda fn: lambda item: not fn(item)
 
-affordable_product_criteria = negate(costly_product_criteria)
+affordable_product_predicate = negate(costly_product_predicate)
 
 print('Affordable Products [ cost < 60 ]')
-affordable_products = filter(products, affordable_product_criteria)
+affordable_products = filter(products, affordable_product_predicate)
 print_list(affordable_products)
+
+
+def get_or_predicate(predicate1, predicate2):
+    def or_predicate(item):
+        return predicate1(item) or predicate2(item)
+    return or_predicate
+
+
+affordable_or_grocery_product_predicate = get_or_predicate(affordable_product_predicate, lambda product : product['category'] == 'grocery')
+affordable_or_grocery_products = filter(products, affordable_or_grocery_product_predicate)
+print('Affordable OR grocery products')
+print_list(affordable_or_grocery_products)
+
+
+def group_by(list, key_selector):
+    result = {}
+    for item in list:
+        key = key_selector(item)
+        if (key not in result):
+            result[key] = []
+        result[key].append(item)
+    return result
+
+
+products_by_category = group_by(products, lambda product : product['category'])
+print('Products by category')
+print(products_by_category)
+print_line()
+
+
+def get_key_by_cost(product):
+    if (product['cost'] >= 60):
+        return 'costly'
+    return 'affordable'
+
+
+products_by_cost = group_by(products, get_key_by_cost)
+print('Products by cost')
+print(products_by_cost)
+print_line()
+
+
+
