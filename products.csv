@@ -1,0 +1,6 @@
+id,name,cost,units,category
+5,'Pen',60,40,'stationary'
+9,'Hen',70,20,'grocery'
+4,'Ten',30,90,'stationary'
+6,'Den',90,60,'grocery'
+2,'Zen',50,30,'stationary'

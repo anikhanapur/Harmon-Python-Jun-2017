@@ -1,3 +1,6 @@
+import itertools
+
+
 products = []
 products.append({'id' : 5, 'name' : 'Pen', 'cost' : 60, 'units' : 40, 'category' : 'stationary'})
 products.append({'id' : 9, 'name' : 'Hen', 'cost' : 70, 'units' : 20, 'category' : 'grocery'})
@@ -106,7 +109,9 @@ def costly_product_predicate(product):
 
 print('Costly Products [ cost >= 60 ]')
 # costly_products = filter(products, costly_product_predicate)
-costly_products = filter(products, lambda product: product['cost'] >= 60)
+# costly_products = filter(products, lambda product: product['cost'] >= 60)
+
+stationary_products = itertools.ifilter(lambda product : product['category'] == 'stationary', products)
 print_list(costly_products)
 
 
